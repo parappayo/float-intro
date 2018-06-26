@@ -14,8 +14,8 @@ Although a thorough understanding of the underlying bytes is not necessary to le
 
 # Bibliography
 
-[Wikipedia article on IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
-[Wikipedia article on Single-precision floating-point format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
-[Wikipedia article on Endianness](https://en.wikipedia.org/wiki/Endianness)
-[Essential Mathematics for Games and Interactive Applications](http://www.essentialmath.com/book.htm)
-[IEEE-754 Floating Point Converter on h-schmidt.net](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
+* [Wikipedia article on IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
+* [Wikipedia article on Single-precision floating-point format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
+* [Wikipedia article on Endianness](https://en.wikipedia.org/wiki/Endianness)
+* [Essential Mathematics for Games and Interactive Applications](http://www.essentialmath.com/book.htm)
+* [IEEE-754 Floating Point Converter on h-schmidt.net](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
