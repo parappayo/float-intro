@@ -1,0 +1,80 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/night.css">
+		<style type="text/css">
+			p { text-align: left; }
+			.reveal h3 { font-size: 170%; text-decoration: underline; }
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>Intro to Floats</h2>
+					<h2>IEEE 754</h2>
+				</section>
+
+				<section>
+					<h3>Motivating Example</h3>
+					<p>Has this happened to you?</p>
+					<pre>
+$ node
+> (0.1 + 0.2)
+0.30000000000000004
+					</pre>
+					<p>Ugh!</p>
+				</section>
+
+				<section>
+					<h3>Safety by Folklore</h3>
+					<p>JavaScript developers are quick to offer advice:</p>
+					<ul>
+						<li>Never store currency as a fraction</li>
+						<li>Apply Math.floor liberally</li>
+						<li>Question everything</li>
+					</ul>
+					<p>Rather than living in fear, let's look at the format.</p>
+				</section>
+
+				<section>
+					<h3>Integral Numerical Types</h3>
+					<p>There's stuff to grok about whole numbers.</p>
+					<ul>
+						<li>Integer numbers are stored as base-256</li>
+						<li>One byte per "digit" (misnomer)</li>
+						<li>Byte order varies: little endian or big endian</li>
+						<li>Signed integers use Two's Complement</li>
+					</ul>
+					<p>JavaScript does not have a built-in integer type.</p>
+				</section>
+
+				<section>
+					<h3>Fixed Point Numbers</h3>
+					<p>Let's add some "decimal" (oops) places.</p>
+					<ul>
+						<li>32 bit 16.16 fixed point: shifted 16 bits</li>
+						<li>Range above the point is 0 .. 65,535</li>
+						<li>Below the point is 0 .. (1/2 + 1/4 + .. + 1/65,536)</li>
+						<li>Add and multiply at the bit level work the same as int types</li>
+					</ul>
+					<p>Neither C nor JavaScript has a built-in fixed point type.</p>
+				</section>
+
+				<section>
+					<h3>Why No 0.3?</h3>
+					<p>3/10 = 1/16 + 7/40 = ...</p>
+					<p>If this seems strange, consider that 1/3 has no exact base 10 representation.</p>
+				</section>
+
+				<section>
+					<h3>Further Reading</h3>
+				</section>
+			</div>
+		</div>
+		<script src="js/reveal.min.js"></script>
+		<script>
+			Reveal.initialize();
+		</script>
+	</body>
+</html>
