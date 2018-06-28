@@ -1,5 +1,11 @@
 
-float_test:
-	gcc float_test.c -o float_test --std=c99 -Wall
+CC = gcc
+FLAGS = --std=c99 -Wall
 
-all: float_test
+%.exe: %.c
+	$(CC) $< -o $@ $(FLAGS)
+
+clean:
+	rm *.exe
+
+all: float_test.exe float2hex.exe float_fields.exe endian.exe

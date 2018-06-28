@@ -101,18 +101,18 @@ $ node
 					<h3>Exploring Bit Fields</h3>
 					<p>Portability suffers but you can use a C struct to unpack a float.</p>
 					<pre>
-union float_wrapper
+typedef union
 {
 	float value;
 
 	// warning: assumes little endian
-	struct fields
+	struct
 	{
 		unsigned int mantissa : 23;
 		unsigned int exponent : 8;
 		unsigned int sign : 1;
-	};
-};</pre>
+	} fields;
+} float_union;</pre>
 				</section>
 
 				<section>
