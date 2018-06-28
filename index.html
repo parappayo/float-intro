@@ -42,7 +42,7 @@ $ node
 					<p>There's stuff to grok about whole numbers.</p>
 					<ul>
 						<li>Integer numbers are stored as base-256</li>
-						<li>One byte per "digit" (misnomer)</li>
+						<li>One byte per "digit" (misnomer, not base 10)</li>
 						<li>Byte order varies: little endian or big endian</li>
 						<li>Signed integers use Two's Complement</li>
 					</ul>
@@ -70,15 +70,16 @@ $ node
 				</section>
 
 				<section>
-					<h3>Single Precision Floating Point</h3>
+					<h3>Single-Precision Floating Point</h3>
 					<p>We can use scientific notation in base-2.</p>
-					<p>32-bit float:
+					<p>Single-precision (32-bit) float:
 					<ul>
 						<li>1 sign bit (0 = +, 1 = -)</li>
 						<li>8 exponent bits, range is 127..-126</li>
 						<li>23 mantissa bits</li>
 					</ul>
 					<p>The leading digit is always a 1, so we imply this digit to extend our precision to 24-bits.</p>
+					<p>Double-precision is 64-bit with 11 exponent bits.</p>
 				</section>
 
 				<section>
@@ -92,18 +93,8 @@ $ node
 				<section>
 					<h3>Infinity, NaN</h3>
 					<p>The max exponent (0xFF) is also special.</p>
-					<p>If the mantissa is zero, the value is +Infinity or -Infinity, depending on the sign bit</p>
-					<p>If the mantissa is non-zero, the value is NaN.</p>
-				</section>
-
-				<section>
-					<h3>Exploring Byte Values</h3>
-					<p>C lets us coerce types to see the bytes of a float:</p>
-					<pre>
-assert(sizeof(int) == sizeof(float));
-float test_value = strtof(argv[1], NULL);
-printf("%x\n", *(int*)&test_value);</pre>
-					<p>Alternatively, try <a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">an online tool</a> (h-schidt.net).</p>
+					<p>Mantissa is zero: value is +Infinity or -Infinity (depending on the sign bit)</p>
+					<p>Mantissa is non-zero: value is NaN</p>
 				</section>
 
 				<section>
@@ -125,6 +116,16 @@ union float_wrapper
 				</section>
 
 				<section>
+					<h3>Exploring Byte Values</h3>
+					<p>C lets us coerce types to see the bytes of a float:</p>
+					<pre>
+assert(sizeof(int) == sizeof(float));
+float test_value = strtof(argv[1], NULL);
+printf("%x\n", *(int*)&test_value);</pre>
+					<p>Alternatively, try <a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">an online tool</a>.</p>
+				</section>
+
+				<section>
 					<h3>Helpful Properties</h3>
 					<ul>
 						<li>All 0 bytes = float value 0.0f</li>
@@ -132,6 +133,37 @@ union float_wrapper
 						<li>Incrementing the int representation of a float gets you the next furthest from zero value (except zero, NaN, Infinity)</li>
 						<li>Integer representation of a float approximates the base-2 logarithm of that float value</li>
 					</ul>
+					<p>Bruce Dawson:</p>
+					<pre>double log2_estimate = (*(int*)float_value - 0x3f800000)
+	/ double(0x40000000 - 0x3f800000);</pre>
+				</section>
+
+				<section>
+					<h3>Relative Error and ULPs</h3>
+					<p>Two terms that are used when discussing float accuracy,</p>
+					<ul>
+						<li>ULP = Units in Last Place</li>
+						<li>Relative Error = (value - actual) / actual</li>
+					</ul>
+					<p><a href="https://en.wikipedia.org/wiki/Loss_of_significance">Catastrophic Cancellation</a> occurs when the relative error from an operation is more significant than the result.</p>
+				</section>
+
+				<section>
+					<h3>Comparing Floats</h3>
+					<p>Bit-wise comparison of floats is typically not what you want.</p>
+					<p>Robustly testing equality is <a href="https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/">surprisingly hard</a>.</p>
+					<pre>
+bool is_relatively_equal(float a, float b, float epsilon = FLT_EPSILON) {
+	return fabs(a - b) <= max(fabs(a), fabs(b)) * epsilon;
+}</pre>
+					<p>This works okay but beware edge cases when one or both args could be zero.</p>
+				</section>
+
+				<section>
+					<h3>Floating Point Determinism</h3>
+					<p>Results from float ops may vary depending on hardware architecture and compiler settings.</p>
+					<p>Compilers may offer a setting for strict IEEE 754 compliance, which helps determinism at the cost of reduced performance.</p>
+					<p>Floating Point Unit (FPU) typically provides settings to control internal precision and rounding, but system API / DLL calls may stomp your changes.</p>
 				</section>
 
 				<section>
@@ -142,11 +174,14 @@ union float_wrapper
 						<li>Intended to be safe for currency values</li>
 						<li>1/3 still cannot be represented exactly</li>
 					</ul>
-					<p>Jon Skeet has a good <a href="http://csharpindepth.com/Articles/General/Decimal.aspx">C# in Depth article</a> on Decimal.</p>
+					<p>Jon Skeet has a good <a href="http://csharpindepth.com/Articles/General/Decimal.aspx">C# in Depth article</a>.</p>
 				</section>
 
 				<section>
 					<h3>Further Reading</h3>
+					<p>Wikipedia pages (<a href="https://en.wikipedia.org/wiki/IEEE_754">1</a>, <a href="https://en.wikipedia.org/wiki/Single-precision_floating-point_format">2</a>, <a href="(https://en.wikipedia.org/wiki/Loss_of_significance">3</a>)</p>
+					<p><a href="https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/">Bruce Dawson series</a> on Random ASCII blog</p>
+					<p><a href="http://www.itu.dk/~sestoft/bachelor/IEEE754_article.pdf">David Goldberg paper</a> (pdf) for Xerox PARC</p>
 				</section>
 			</div>
 		</div>

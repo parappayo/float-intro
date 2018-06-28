@@ -1,5 +1,7 @@
 # float-intro
 
+[Browse the slides here](https://parappayo.github.com/float-intro).
+
 I'm working on a presentation that introduces the basics of IEEE 754 floating point numerical data.
 
 The general idea is to provide some insight into the following class of gotchas:
@@ -17,17 +19,25 @@ Although a thorough understanding of the underlying bytes is not necessary to le
 Slide deck contents in brief,
 
 * Motivating Example
-* Folklore for Avoiding Trouble
-* Int, Fixed Point
-* Scientific Notation, Floating Point
-* .NET Decimal
-* Fun Properties
-* Inspecting Float Values in C
-* Verifying Float Properties in C
+* Safety by Folklore
+* Integral Numerical Types
+* Fixed Point Numbers
+* Scientific Notation
+* Single-Precision Floating Point
+* Denormal Values
+* Infinity, NaN
+* Exploring Bit Fields
+* Exploring Byte Values
+* Helpful Properties
+* Relative Error and ULPs
+* Comparing Floats
+* Floating Point Determinism
+* .NET Decimal Type
 
 # To-Do
 
-* Add some illustrative figures that show bits as boxes
+* Add illustrative figures of the bits in a float
+* Add code examples that demonstrate the properties of floats
 
 # Dependencies
 
@@ -37,10 +47,13 @@ Slide deck contents in brief,
 
 * [Wikipedia article on IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 * [Wikipedia article on Single-precision floating-point format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
+* [Wikipedia article on Loss of Significance](https://en.wikipedia.org/wiki/Loss_of_significance)
 * [Wikipedia article on Endianness](https://en.wikipedia.org/wiki/Endianness)
+* [Comparing Float Values](https://randomascii.wordpress.com/2012/02/25/comparing-floating-point-numbers-2012-edition/)
+* [What Every Computer Scientist Should Know About Floating-Point Arithmetic (pdf)](http://www.itu.dk/~sestoft/bachelor/IEEE754_article.pdf)
 * [Essential Mathematics for Games and Interactive Applications](http://www.essentialmath.com/book.htm)
 * [IEEE-754 Floating Point Converter on h-schmidt.net](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
 * [Berkeley Introduction to Fixed Point](http://www-inst.eecs.berkeley.edu/~cs61c/sp06/handout/fixedpt.html)
 * [C# in Depth article about Decimal](http://csharpindepth.com/Articles/General/Decimal.aspx)
 * [Stanford Bit Twiddling Hacks](https://graphics.stanford.edu/~seander/bithacks.html)
-* [Tricks With the Floating-Point Format](https://randomascii.wordpress.com/2012/01/11/tricks-with-the-floating-point-format/)
+* [Floating Point Determinsm](https://gafferongames.com/post/floating_point_determinism/)
