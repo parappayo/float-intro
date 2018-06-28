@@ -4,7 +4,7 @@
 		<link rel="stylesheet" href="css/theme/night.css">
 		<style type="text/css">
 			p { text-align: left; }
-			.reveal h3 { font-size: 170%; text-decoration: underline; }
+			.reveal h3 { font-size: 150%; text-decoration: underline; }
 		</style>
 	</head>
 	<body>
@@ -21,20 +21,20 @@
 					<pre>
 $ node
 > (0.1 + 0.2)
-0.30000000000000004
-					</pre>
-					<p>Ugh!</p>
+0.30000000000000004</pre>
+					<p>Ugh! But why?</p>
 				</section>
 
 				<section>
 					<h3>Safety by Folklore</h3>
 					<p>JavaScript developers are quick to offer advice:</p>
 					<ul>
-						<li>Never store currency as a fraction</li>
+						<li>Never store currency as a single var</li>
+						<li>Consider non-whole numbers "approximate"</li>
 						<li>Apply Math.floor liberally</li>
 						<li>Question everything</li>
 					</ul>
-					<p>Rather than living in fear, let's look at the format.</p>
+					<p>Rather than living in fear, let's look at the data.</p>
 				</section>
 
 				<section>
@@ -56,15 +56,93 @@ $ node
 						<li>32 bit 16.16 fixed point: shifted 16 bits</li>
 						<li>Range above the point is 0 .. 65,535</li>
 						<li>Below the point is 0 .. (1/2 + 1/4 + .. + 1/65,536)</li>
-						<li>Add and multiply at the bit level work the same as int types</li>
+						<li>Computationally cheap: add and multiply at the bit level work in the same way as int types</li>
 					</ul>
-					<p>Neither C nor JavaScript has a built-in fixed point type.</p>
+					<p>Neither C nor JS has a built-in fixed point type.</p>
 				</section>
 
 				<section>
-					<h3>Why No 0.3?</h3>
-					<p>3/10 = 1/16 + 7/40 = ...</p>
-					<p>If this seems strange, consider that 1/3 has no exact base 10 representation.</p>
+					<h3>Scientific Notation</h3>
+					<p>Compact notation for representing a large range of numbers at the cost of limited precision.</p>
+					<pre>1.234 * 10^12 = 1,234,000,000,000</pre>
+					<p>"12" is the exponent, specifies order of magnitude</p>
+					<p>"1.234" is the mantissa, contains significant digits</p>
+				</section>
+
+				<section>
+					<h3>Single Precision Floating Point</h3>
+					<p>We can use scientific notation in base-2.</p>
+					<p>32-bit float:
+					<ul>
+						<li>1 sign bit (0 = +, 1 = -)</li>
+						<li>8 exponent bits, range is 127..-126</li>
+						<li>23 mantissa bits</li>
+					</ul>
+					<p>The leading digit is always a 1, so we imply this digit to extend our precision to 24-bits.</p>
+				</section>
+
+				<section>
+					<h3>Denormal Values</h3>
+					<p>Assuming a leading digit of 1 limits the range of values near zero.</p>
+					<p>Minimum positive normal value = 2^-126</p>
+					<p>We introduce a convention of Denormals: when the exponent is zero, the mantissa is assumed not to have a leading 1.</p>
+					<p>Minimum positive denormal value = 2^-149</p>
+				</section>
+
+				<section>
+					<h3>Infinity, NaN</h3>
+					<p>The max exponent (0xFF) is also special.</p>
+					<p>If the mantissa is zero, the value is +Infinity or -Infinity, depending on the sign bit</p>
+					<p>If the mantissa is non-zero, the value is NaN.</p>
+				</section>
+
+				<section>
+					<h3>Exploring Byte Values</h3>
+					<p>C lets us coerce types to see the bytes of a float:</p>
+					<pre>
+assert(sizeof(int) == sizeof(float));
+float test_value = strtof(argv[1], NULL);
+printf("%x\n", *(int*)&test_value);</pre>
+					<p>Alternatively, try <a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">an online tool</a> (h-schidt.net).</p>
+				</section>
+
+				<section>
+					<h3>Exploring Bit Fields</h3>
+					<p>Portability suffers but you can use a C struct to unpack a float.</p>
+					<pre>
+union float_wrapper
+{
+	float value;
+
+	// warning: assumes little endian
+	struct fields
+	{
+		unsigned int mantissa : 23;
+		unsigned int exponent : 8;
+		unsigned int sign : 1;
+	};
+};</pre>
+				</section>
+
+				<section>
+					<h3>Helpful Properties</h3>
+					<ul>
+						<li>All 0 bytes = float value 0.0f</li>
+						<li>Any 23 bit whole number is represented exactly</li>
+						<li>Incrementing the int representation of a float gets you the next furthest from zero value (except zero, NaN, Infinity)</li>
+						<li>Integer representation of a float approximates the base-2 logarithm of that float value</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>.NET Decimal Type</h3>
+					<p>The Decimal type has enhanced precision and limited range.</p>
+					<ul>
+						<li>128-bit with a 96 bit mantissa</li>
+						<li>Intended to be safe for currency values</li>
+						<li>1/3 still cannot be represented exactly</li>
+					</ul>
+					<p>Jon Skeet has a good <a href="http://csharpindepth.com/Articles/General/Decimal.aspx">C# in Depth article</a> on Decimal.</p>
 				</section>
 
 				<section>

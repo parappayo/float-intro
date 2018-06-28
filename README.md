@@ -19,10 +19,15 @@ Slide deck contents in brief,
 * Motivating Example
 * Folklore for Avoiding Trouble
 * Int, Fixed Point
-* Conundrum Over 0.3
 * Scientific Notation, Floating Point
+* .NET Decimal
 * Fun Properties
-* Code Samples
+* Inspecting Float Values in C
+* Verifying Float Properties in C
+
+# To-Do
+
+* Add some illustrative figures that show bits as boxes
 
 # Dependencies
 
@@ -36,4 +41,6 @@ Slide deck contents in brief,
 * [Essential Mathematics for Games and Interactive Applications](http://www.essentialmath.com/book.htm)
 * [IEEE-754 Floating Point Converter on h-schmidt.net](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
 * [Berkeley Introduction to Fixed Point](http://www-inst.eecs.berkeley.edu/~cs61c/sp06/handout/fixedpt.html)
+* [C# in Depth article about Decimal](http://csharpindepth.com/Articles/General/Decimal.aspx)
 * [Stanford Bit Twiddling Hacks](https://graphics.stanford.edu/~seander/bithacks.html)
+* [Tricks With the Floating-Point Format](https://randomascii.wordpress.com/2012/01/11/tricks-with-the-floating-point-format/)
