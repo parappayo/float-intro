@@ -5,6 +5,7 @@
 		<style type="text/css">
 			p { text-align: left; }
 			.reveal h3 { font-size: 150%; text-decoration: underline; }
+			table, th, td { color: white; }
 		</style>
 	</head>
 	<body>
@@ -44,9 +45,23 @@ $ node
 						<li>Integer numbers are stored as base-256</li>
 						<li>One byte per "digit" (misnomer, not base 10)</li>
 						<li>Byte order varies: little endian or big endian</li>
-						<li>Signed integers use Two's Complement</li>
+						<li>Signed integers use <a href="https://en.wikipedia.org/wiki/Two%27s_complement">Two's Complement</a></li>
 					</ul>
 					<p>JavaScript does not have a built-in integer type.</p>
+				</section>
+
+				<section>
+					<h3>Hex to Dec</h3>
+					<p>Bytes in little endian order,</p>
+					<table>
+						<tr>
+							<td>15</td> <td>CD</td> <td>5B</td> <td>07</td>
+							<td>00</td> <td>00</td> <td>00</td> <td>00</td>
+						</tr>
+					</table>
+					<p>= 21 + 205 * 256 + 91 * 256^2 + 7 * 256^3</p>
+					<p>= 21 + 52,480 + 5,963,776 + 117,440,512</p>
+					<p>= 123,456,789</p>
 				</section>
 
 				<section>
@@ -59,6 +74,20 @@ $ node
 						<li>Computationally cheap: add and multiply at the bit level work in the same way as int types</li>
 					</ul>
 					<p>Neither C nor JS has a built-in fixed point type.</p>
+				</section>
+
+				<section>
+					<h3>Fixed Point Bytes</h3>
+					<p>Bytes in little endian order,</p>
+					<table>
+						<tr>
+							<td>15</td> <td>CD</td> <td>5B</td> <td>07</td>
+							<td>.</td>
+							<td>00</td> <td>00</td> <td>00</td> <td>00</td>
+						</tr>
+					</table>
+					<p>= 21 / 256^4 + 205 / 256^3 + 91 / 256^2 + 7 / 256</p>
+					<p>= 0.02874452364</p>
 				</section>
 
 				<section>
@@ -123,6 +152,15 @@ assert(sizeof(int) == sizeof(float));
 float test_value = strtof(argv[1], NULL);
 printf("%x\n", *(int*)&test_value);</pre>
 					<p>Alternatively, try <a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">an online tool</a>.</p>
+				</section>
+
+				<section>
+					<h3>Repeating Decimals</h3>
+					<p>Notice that 0.1 cannot be represented precisely:</p>
+					<p>0.1f = 0x3dcccccd</p>
+					<p>If this seems strange, consider that in decimal 1/9 cannot be represented precisely either.</p>
+					<p>1/9 = 0.111111...</p>
+					<p>This aliasing happens when trying to fit all rational numbers into a fixed denominator.</p>
 				</section>
 
 				<section>
