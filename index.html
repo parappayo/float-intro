@@ -39,6 +39,13 @@ $ node
 				</section>
 
 				<section>
+					<h3>Lots to Know</h3>
+					<p>Unfortunately, floating point is a deep subject.</p>
+					<p>Springer has a textbook: <a href="https://www.springer.com/us/book/9783319765259">Handbook of Floating-Point Arithmetic</a> (1st edition in 2009, 2nd edition in 2018).</p>
+					<p>The Springer book is over 500 pages, has 9 authors, and costs $150. That's a lot of info about floating-point.</p>
+				</section>
+
+				<section>
 					<h3>Integral Numerical Types</h3>
 					<p>There's stuff to grok about whole numbers.</p>
 					<ul>
@@ -59,7 +66,7 @@ $ node
 							<td>00</td> <td>00</td> <td>00</td> <td>00</td>
 						</tr>
 					</table>
-					<p>= 21 + 205 * 256 + 91 * 256^2 + 7 * 256^3</p>
+					<p>= 21 + 205 * 256 + 91 * 256<sup>2</sup> + 7 * 256<sup>3</sup></p>
 					<p>= 21 + 52,480 + 5,963,776 + 117,440,512</p>
 					<p>= 123,456,789</p>
 				</section>
@@ -86,14 +93,14 @@ $ node
 							<td>00</td> <td>00</td> <td>00</td> <td>00</td>
 						</tr>
 					</table>
-					<p>= 21 / 256^4 + 205 / 256^3 + 91 / 256^2 + 7 / 256</p>
+					<p>= 21 / 256<sup>4</sup> + 205 / 256<sup>3</sup> + 91 / 256<sup>2</sup> + 7 / 256</p>
 					<p>= 0.02874452364</p>
 				</section>
 
 				<section>
 					<h3>Scientific Notation</h3>
 					<p>Compact notation for representing a large range of numbers at the cost of limited precision.</p>
-					<pre>1.234 * 10^12 = 1,234,000,000,000</pre>
+					<pre>1.234 * 10<sup>12</sup> = 1,234,000,000,000</pre>
 					<p>"12" is the exponent, specifies order of magnitude</p>
 					<p>"1.234" is the mantissa, contains significant digits</p>
 				</section>
@@ -114,9 +121,9 @@ $ node
 				<section>
 					<h3>Denormal Values</h3>
 					<p>Assuming a leading digit of 1 limits the range of values near zero.</p>
-					<p>Minimum positive normal value = 2^-126</p>
+					<p>Minimum positive normal value = 2<sup>-126</sup></p>
 					<p>We introduce a convention of Denormals: when the exponent is zero, the mantissa is assumed not to have a leading 1.</p>
-					<p>Minimum positive denormal value = 2^-149</p>
+					<p>Minimum positive denormal value = 2<sup>-149</sup></p>
 				</section>
 
 				<section>
@@ -128,7 +135,7 @@ $ node
 
 				<section>
 					<h3>Exploring Bit Fields</h3>
-					<p>Portability suffers but you can use a C struct to unpack a float.</p>
+					<p>Non-portable, but a C struct can unpack a float using bit fields.</p>
 					<pre>
 typedef union
 {
@@ -141,6 +148,7 @@ typedef union
 		unsigned int exponent : 8;
 		unsigned int sign : 1;
 	} fields;
+
 } float_union;</pre>
 				</section>
 
@@ -149,8 +157,8 @@ typedef union
 					<p>C lets us coerce types to see the bytes of a float:</p>
 					<pre>
 assert(sizeof(int) == sizeof(float));
-float test_value = strtof(argv[1], NULL);
-printf("%x\n", *(int*)&test_value);</pre>
+int raw_bytes = *(int*)&test_value;
+printf("%x\n", raw_bytes);</pre>
 					<p>Alternatively, try <a href="https://www.h-schmidt.net/FloatConverter/IEEE754.html">an online tool</a>.</p>
 				</section>
 

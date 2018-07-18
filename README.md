@@ -45,6 +45,7 @@ Slide deck contents in brief,
 
 # Bibliography
 
+* [Handbook of Floating-Point Arithmetic](https://www.springer.com/us/book/9783319765259)
 * [Wikipedia article on IEEE 754](https://en.wikipedia.org/wiki/IEEE_754)
 * [Wikipedia article on Single-precision floating-point format](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)
 * [Wikipedia article on Loss of Significance](https://en.wikipedia.org/wiki/Loss_of_significance)
